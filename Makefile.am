@@ -5,11 +5,6 @@ MYVERSION=$(shell git describe --always 2>/dev/null || echo 1.0.0)
 AM_LDFLAGS= -L/usr/local/lib -L${srcdir}/deps/prometheus-cpp/build/lib
 LDADD= -lboost_thread
 
-if DEP_HIREDIS
-INCLUDES += -I${srcdir}/deps
-AM_LDFLAGS += -L${srcdir}/deps/hiredis
-endif
-
 bin_PROGRAMS= drachtio
 
 ACLOCAL_AMFLAGS = -I m4
@@ -25,7 +20,6 @@ drachtio_CPPFLAGS= -I${srcdir}/deps/sofia-sip/libsofia-sip-ua/su -I${srcdir}/dep
  -I${srcdir}/deps/sofia-sip/libsofia-sip-ua/sip -I${srcdir}/deps/sofia-sip/libsofia-sip-ua/msg \
  -I${srcdir}/deps/sofia-sip/libsofia-sip-ua/url -I${srcdir}/deps/sofia-sip/libsofia-sip-ua/tport \
  -I${srcdir}/deps/sofia-sip/libsofia-sip-ua/bnf -I${srcdir}/deps/jansson/src \
- -I${srcdir}/deps/hiredis \
  -I${srcdir}/deps/prometheus-cpp/build/include -I/usr/local/include \
  -D_REENTRANT -DBOOST_LOG_DYN_LINK -DDRACHTIO_VERSION=\"$(MYVERSION)\" -Wno-error=deprecated-declarations \
  -DBOOST_ALLOW_DEPRECATED_HEADERS -O2
@@ -72,10 +66,6 @@ endif
 BUILT_SOURCES=${srcdir}/deps/sofia-sip/libsofia-sip-ua/.libs/libsofia-sip-ua.a \
 	${srcdir}/deps/jansson/src/.libs/libjansson.a ${srcdir}/deps/prometheus-cpp/build/lib/libprometheus-cpp-core.a
 
-if DEP_HIREDIS
-BUILT_SOURCES += ${srcdir}/deps/hiredis/libhiredis.a
-endif
-
 # =============================================================================
 # Unit Tests (src/test/)
 # =============================================================================
@@ -109,8 +99,3 @@ ${srcdir}/deps/prometheus-cpp/build/lib/libprometheus-cpp-core.a ${srcdir}/deps/
 	cd ${srcdir}/deps/prometheus-cpp && mkdir -p build && cd build  && \
 	cmake .. -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_INSTALL_PREFIX=`pwd` && \
 	$(MAKE) && make install
-
-if DEP_HIREDIS
-${srcdir}/deps/hiredis/libhiredis.a:
-	cd ${srcdir}/deps/hiredis && cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DBUILD_SHARED_LIBS=OFF -DENABLE_SSL=ON . && $(MAKE)
-endif
