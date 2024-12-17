@@ -3,7 +3,7 @@ name: Docker
 on:
   push:
     tags:
-      - "v*"
+      - "v*-ac"
 jobs:
   docker:
     runs-on: ubuntu-24.04
