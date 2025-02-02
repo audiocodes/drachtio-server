@@ -1684,8 +1684,9 @@ namespace drachtio {
             assert(0) ;
         }
         if( findRIPByOrq( orq, rip ) ) {
+            const int code = sip->sip_status->st_status ;
 
-            if( sip->sip_status->st_status != 200 ) {
+            if( code == 408 || code == 481 ) {
                 DR_LOG(log_info) << "SipDialogController::processResponseToRefreshingReinvite: reinvite failed (status="
                                  << sip->sip_status->st_status << ") - clearing dialog";
                 notifyTerminateStaleDialog( dlg );
