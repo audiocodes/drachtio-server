@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim AS build
+FROM ubuntu:24.10 AS build
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     autoconf \
@@ -32,19 +32,19 @@ ARG MYVERSION=1.0.0
 RUN ../configure --enable-tcmalloc=yes CPPFLAGS='-DNDEBUG' CXXFLAGS='-O2'
 RUN make -j$(nproc) MYVERSION=${MYVERSION}
 
-FROM debian:bookworm-slim
+FROM ubuntu:24.10
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
     jq \
     less \
-    libboost-filesystem1.74.0 \
-    libboost-log1.74.0 \
-    libboost-system1.74.0 \
-    libboost-thread1.74.0 \
+    libboost-filesystem1.83.0 \
+    libboost-log1.83.0 \
+    libboost-system1.83.0 \
+    libboost-thread1.83.0 \
     libgoogle-perftools4 \
-    libhiredis0.14 \
+    libhiredis1.1.0 \
     net-tools \
     procps \
     sudo \
