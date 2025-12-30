@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim AS build
+FROM debian:trixie-slim AS build
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     autoconf \
@@ -11,10 +11,10 @@ RUN apt-get update \
     gcc \
     git \
     jq \
-    libboost-filesystem-dev \
-    libboost-log-dev \
-    libboost-system-dev \
-    libboost-thread-dev \
+    libboost-filesystem1.88-dev \
+    libboost-log1.88-dev \
+    libboost-system1.88-dev \
+    libboost-thread1.88-dev \
     libcurl4-openssl-dev \
     libgoogle-perftools-dev \
     libhiredis-dev \
@@ -32,19 +32,19 @@ ARG MYVERSION=1.0.0
 RUN ../configure --enable-tcmalloc=yes CPPFLAGS='-DNDEBUG' CXXFLAGS='-O2'
 RUN make -j$(nproc) MYVERSION=${MYVERSION}
 
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
     jq \
     less \
-    libboost-filesystem1.74.0 \
-    libboost-log1.74.0 \
-    libboost-system1.74.0 \
-    libboost-thread1.74.0 \
-    libgoogle-perftools4 \
-    libhiredis0.14 \
+    libboost-filesystem1.88.0 \
+    libboost-log1.88.0 \
+    libboost-system1.88.0 \
+    libboost-thread1.88.0 \
+    libgoogle-perftools4t64 \
+    libhiredis1.1.0 \
     net-tools \
     procps \
     sudo \
