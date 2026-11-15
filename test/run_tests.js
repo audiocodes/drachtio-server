@@ -66,6 +66,10 @@ function runFixture(f, fixtureIndex) {
       };
 
       const timeoutMs = f.timeout || 10000;
+      // sipp's own reason for failing a call (unexpected message, regexp mismatch...),
+      // next to the fixture's drachtio log so CI uploads it with the same glob
+      const sippErrors = (role) =>
+        `-trace_err -error_file ${LOG_DIR}/${logSlug(fixtureIndex, f.message).replace(/\.log$/, `-sipp-${role}.log`)}`;
       let uasPromise, scriptPromise, uacPromise;
       let script;
 
@@ -96,7 +100,7 @@ function runFixture(f, fixtureIndex) {
           await waitForPort(f.uas.port).catch((err) => {
             logger.warn(`port ${f.uas.port} still in use, proceeding anyway: ${err.message}`);
           });
-          let cmd = `sipp -sf ./${f.uas.name} -i 127.0.0.1 -p ${f.uas.port} -m 1`;
+          let cmd = `sipp -sf ./${f.uas.name} -i 127.0.0.1 -p ${f.uas.port} -m 1 ${sippErrors('uas')}`;
           if (f.uas.transport === 'tcp') cmd += ' -t t1';
           logger.debug(`starting UAS scenario: ${cmd}`);
           uasPromise = execCmd(cmd, {cwd: './scenarios'});
@@ -137,7 +141,7 @@ function runFixture(f, fixtureIndex) {
           const cid_str = '-cid_str %u-%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p' +
             '%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p' +
             '%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p%p@%s';
-          let cmd = `sipp -sf ./${f.uac.name} ${f.uac.target} ${f.uac.long_call_id ? cid_str : ''} -m 1`;
+          let cmd = `sipp -sf ./${f.uac.name} ${f.uac.target} ${f.uac.long_call_id ? cid_str : ''} -m 1 ${sippErrors('uac')}`;
           if (f.uac.transport === 'tcp') cmd += ' -t tn';
           logger.debug(`starting UAC scenario: ${cmd}`);
           uacPromise = execCmd(cmd, {cwd: './scenarios'});
