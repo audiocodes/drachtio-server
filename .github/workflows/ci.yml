@@ -11,7 +11,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: recursive
       - name: Install dependencies
@@ -37,9 +37,9 @@ jobs:
           make
           sudo make install
       - name: install nodejs 
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 26
       - name: run ci tests
         run: |
           cd test
@@ -51,7 +51,7 @@ jobs:
           if [ -f /tmp/drachtio.log ]; then cat /tmp/drachtio.log; fi
       - name: upload per-fixture drachtio logs
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: drachtio-fixture-logs
           path: /tmp/drachtio-fixture-*.log
