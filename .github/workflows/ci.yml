@@ -25,6 +25,7 @@ jobs:
           libcurl4-openssl-dev
           libgoogle-perftools-dev
           libhiredis-dev
+          libjansson-dev
           libtool
           libtool-bin
           libunwind-dev

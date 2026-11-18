@@ -56,16 +56,6 @@ LIBCURL_CHECK_CONFIG
 
 # Checks for libraries.
 
-# optional linking with the system jansson instead of deps/jansson
-AC_ARG_WITH([system-jansson],
-[  --with-system-jansson  Link with the system jansson (requires libjansson-dev) instead of deps/jansson],
-[],[with_system_jansson=no])
-AM_CONDITIONAL([SYSTEM_JANSSON], [test x$with_system_jansson = xyes])
-if test x$with_system_jansson = xyes; then
-  AC_CHECK_HEADER([jansson.h], [], [AC_MSG_ERROR([--with-system-jansson: jansson.h not found])])
-  AC_CHECK_LIB([jansson], [json_loads], [:], [AC_MSG_ERROR([--with-system-jansson: libjansson not found])])
-fi
-
 # Checks for header files.
 
 # Checks for typedefs, structures, and compiler characteristics.
