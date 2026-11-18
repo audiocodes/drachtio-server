@@ -15,7 +15,7 @@ The `drachtio/drachtio-server:latest` tagged image is kept current with the tip 
 
 > Note: The build requires the [Boost]() libraries as well as libcurl and tcmalloc.  These can can be installed on debian as follows
 ```bash
-sudo apt install libcurl4-openssl-dev libboost-all-dev
+sudo apt install libcurl4-openssl-dev libboost-all-dev libhiredis-dev libjansson-dev
 ```
  
 All other third-party dependencies can be found under $(srcdir)/deps.  These include boost and the [sofia sip stack](https://github.com/davehorton/sofia-sip).  sofia is included as git submodules in this project.
@@ -39,16 +39,6 @@ sudo apt install libgoogle-perftools-dev
 ```bash
 # run autotools and create build directory as shown above
 ../configure --enable-tcmalloc=yes CPPFLAGS='-DNDEBUG'
-```
-
-### Building with the system jansson
-By default jansson is built from the `deps/jansson` submodule. To link with the distribution's package instead:
-
-```bash
-sudo apt install libjansson-dev
-```
-```bash
-../configure --with-system-jansson CPPFLAGS='-DNDEBUG'
 ```
 
 ## Platform support and dependencies

@@ -8,6 +8,3 @@
 [submodule "deps/cpp-bredis"]
 	path = deps/cpp-bredis
 	url = https://github.com/basiliscos/cpp-bredis.git
-[submodule "deps/jansson"]
-	path = deps/jansson
-	url = https://github.com/akheron/jansson.git

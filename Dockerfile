@@ -18,6 +18,7 @@ RUN apt-get update \
     libcurl4-openssl-dev \
     libgoogle-perftools-dev \
     libhiredis-dev \
+    libjansson-dev \
     libssl-dev \
     libtool \
     libtool-bin \
@@ -45,6 +46,7 @@ RUN apt-get update \
     libboost-thread1.88.0 \
     libgoogle-perftools4t64 \
     libhiredis1.1.0 \
+    libjansson4 \
     net-tools \
     procps \
     sudo \

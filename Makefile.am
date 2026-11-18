@@ -25,7 +25,7 @@ drachtio_CPPFLAGS= -I${srcdir}/deps/sofia-sip/libsofia-sip-ua/su -I${srcdir}/dep
  -DBOOST_ALLOW_DEPRECATED_HEADERS -O2
 
 drachtio_LDADD= ${srcdir}/deps/sofia-sip/libsofia-sip-ua/.libs/libsofia-sip-ua.a \
-  -lhiredis -lcurl -lpthread -lssl -lcrypto -lz
+  -ljansson -lhiredis -lcurl -lpthread -lssl -lcrypto -lz
 
 if LINUX
 drachtio_CPPFLAGS += -Wno-stringop-overflow
@@ -65,14 +65,6 @@ endif
 BUILT_SOURCES=${srcdir}/deps/sofia-sip/libsofia-sip-ua/.libs/libsofia-sip-ua.a \
 	${srcdir}/deps/prometheus-cpp/build/lib/libprometheus-cpp-core.a
 
-if SYSTEM_JANSSON
-drachtio_LDADD += -ljansson
-else
-drachtio_CPPFLAGS += -I${srcdir}/deps/jansson/src
-drachtio_LDADD += ${srcdir}/deps/jansson/src/.libs/libjansson.a
-BUILT_SOURCES += ${srcdir}/deps/jansson/src/.libs/libjansson.a
-endif
-
 # =============================================================================
 # Unit Tests (src/test/)
 # =============================================================================
@@ -98,9 +90,6 @@ clean-local:
 
 ${srcdir}/deps/sofia-sip/libsofia-sip-ua/.libs/libsofia-sip-ua.a:
 	cd ${srcdir}/deps/sofia-sip && ./bootstrap.sh && ./configure CFLAGS="$(CFLAGS) $(ASAN_FLAGS)" CXXFLAGS="$(CXXFLAGS) $(ASAN_FLAGS)" LDFLAGS="$(LDFLAGS) $(ASAN_FLAGS)" --with-glib=no && $(MAKE)
-
-${srcdir}/deps/jansson/src/.libs/libjansson.a:
-	cd ${srcdir}/deps/jansson && autoreconf -fi && ./configure && $(MAKE)
 
 ${srcdir}/deps/prometheus-cpp/build/lib/libprometheus-cpp-core.a ${srcdir}/deps/prometheus-cpp/build/lib/libprometheus-cpp-pull.a:
 	cd ${srcdir}/deps/prometheus-cpp && mkdir -p build && cd build  && \
