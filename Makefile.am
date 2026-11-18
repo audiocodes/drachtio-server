@@ -19,13 +19,12 @@ drachtio_SOURCES= src/main.cpp src/controller.cpp src/drachtio-config.cpp \
 drachtio_CPPFLAGS= -I${srcdir}/deps/sofia-sip/libsofia-sip-ua/su -I${srcdir}/deps/sofia-sip/libsofia-sip-ua/nta \
  -I${srcdir}/deps/sofia-sip/libsofia-sip-ua/sip -I${srcdir}/deps/sofia-sip/libsofia-sip-ua/msg \
  -I${srcdir}/deps/sofia-sip/libsofia-sip-ua/url -I${srcdir}/deps/sofia-sip/libsofia-sip-ua/tport \
- -I${srcdir}/deps/sofia-sip/libsofia-sip-ua/bnf -I${srcdir}/deps/jansson/src \
+ -I${srcdir}/deps/sofia-sip/libsofia-sip-ua/bnf \
  -I${srcdir}/deps/prometheus-cpp/build/include -I/usr/local/include \
  -D_REENTRANT -DBOOST_LOG_DYN_LINK -DDRACHTIO_VERSION=\"$(MYVERSION)\" -Wno-error=deprecated-declarations \
  -DBOOST_ALLOW_DEPRECATED_HEADERS -O2
 
 drachtio_LDADD= ${srcdir}/deps/sofia-sip/libsofia-sip-ua/.libs/libsofia-sip-ua.a \
-  ${srcdir}/deps/jansson/src/.libs/libjansson.a \
   -lhiredis -lcurl -lpthread -lssl -lcrypto -lz
 
 if LINUX
@@ -64,7 +63,15 @@ drachtio_CPPFLAGS += -O1
 endif
 
 BUILT_SOURCES=${srcdir}/deps/sofia-sip/libsofia-sip-ua/.libs/libsofia-sip-ua.a \
-	${srcdir}/deps/jansson/src/.libs/libjansson.a ${srcdir}/deps/prometheus-cpp/build/lib/libprometheus-cpp-core.a
+	${srcdir}/deps/prometheus-cpp/build/lib/libprometheus-cpp-core.a
+
+if SYSTEM_JANSSON
+drachtio_LDADD += -ljansson
+else
+drachtio_CPPFLAGS += -I${srcdir}/deps/jansson/src
+drachtio_LDADD += ${srcdir}/deps/jansson/src/.libs/libjansson.a
+BUILT_SOURCES += ${srcdir}/deps/jansson/src/.libs/libjansson.a
+endif
 
 # =============================================================================
 # Unit Tests (src/test/)
