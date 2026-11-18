@@ -92,6 +92,9 @@ const run = (name, scenario, inCall, {transport = 'u1'} = {}) => {
     if (srf) srf.disconnect();
     await stop();
     const log = fs.readFileSync(LOG, 'utf8');
+    // keep each case's log: the next case deletes LOG, and CI uploads drachtio-fixture-*.log
+    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
+    fs.writeFileSync(`/tmp/drachtio-fixture-rip-${slug}.log`, log);
     t.equal(lastCount(log, 'RIP size:'), 0, 'no RIPs left after the call');
     t.equal(lastCount(log, 'IIP size:'), 0, 'no IIPs left after the call');
     t.end();
