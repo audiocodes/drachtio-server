@@ -41,6 +41,16 @@ sudo apt install libgoogle-perftools-dev
 ../configure --enable-tcmalloc=yes CPPFLAGS='-DNDEBUG'
 ```
 
+### Building with the system jansson
+By default jansson is built from the `deps/jansson` submodule. To link with the distribution's package instead:
+
+```bash
+sudo apt install libjansson-dev
+```
+```bash
+../configure --with-system-jansson CPPFLAGS='-DNDEBUG'
+```
+
 ## Platform support and dependencies
 
 drachtio-server has been most heavily deployed on debian buster (10) but has undergone at least some level of testing on the following platforms:
